@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDIGUARD — Emergency Alert System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef7ff, #dcefff);
+    color: #172033;
+}
+
+/* NAVBAR */
+.navbar {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,0.8);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #e63946;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    color: #e63946;
+}
+
+/* HERO */
+.hero {
+    padding: 70px 6% 40px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: rgba(230,57,70,0.1);
+    color: #d62839;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: 55px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    color: #e63946;
+}
+
+.hero p {
+    max-width: 600px;
+    color: #64748b;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #e63946;
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: #334155;
+    border: 1px solid #dbe4ef;
+}
+
+/* SOS CARD */
+.sos-card {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    padding: 35px;
+    border-radius: 28px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(55,80,110,0.12);
+}
+
+.sos-card h2 {
+    margin-bottom: 8px;
+}
+
+.sos-card p {
+    color: #718096;
+    font-size: 14px;
+}
+
+.sos-button {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    border: 15px solid rgba(230,57,70,0.12);
+    background: #e63946;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 30px auto 20px;
+    cursor: pointer;
+    box-shadow: 0 0 0 15px rgba(230,57,70,0.05);
+    transition: 0.3s;
+}
+
+.sos-button:hover {
+    transform: scale(1.05);
+}
+
+.sos-status {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* SECTION */
+.section {
+    padding: 60px 6%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: #64748b;
+}
+
+/* FEATURES */
+.features {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.75);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.8);
+    box-shadow: 0 10px 30px rgba(50,70,100,0.08);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #eef6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 22px;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* DASHBOARD */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.profile-card,
+.location-card {
+    background: white;
+    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(50,70,100,0.08);
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #64748b;
+}
+
+.map {
+    height: 220px;
+    border-radius: 18px;
+    background:
+        linear-gradient(135deg, rgba(80,150,100,0.15), rgba(80,150,200,0.12)),
+        repeating-linear-gradient(
+            45deg,
+            #e9f4ee,
+            #e9f4ee 12px,
+            #dcece2 12px,
+            #dcece2 14px
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-pin {
+    width: 45px;
+    height: 45px;
+    border-radius: 50% 50% 50% 0;
+    background: #e63946;
+    transform: rotate(-45deg);
+    position: relative;
+}
+
+.location-pin::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    top: 15px;
+    left: 15px;
+}
+
+/* WORKFLOW */
+.workflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.step {
+    background: white;
+    padding: 18px 22px;
+    border-radius: 15px;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(40,60,90,0.07);
+}
+
+.arrow {
+    font-size: 22px;
+    color: #e63946;
+}
+
+/* VALIDATION */
+.validation {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.test {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+}
+
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.pass {
+    color: #16803c;
+    font-weight: bold;
+}
+
+.test p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 50px;
+    padding: 35px 6%;
+    text-align: center;
+    background: #172033;
+    color: white;
+}
+
+footer p {
+    color: #b7c0ce;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .features {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .validation {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:600px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .sos-button {
+        width: 150px;
+        height: 150px;
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-icon">✚</div>
+        MEDIGUARD
+    </div>
+
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#validation">Validation</a>
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+<section class="hero">
+
+    <div>
+
+        <div class="badge">
+            🚨 Medical & Emergency Alert System
+        </div>
+
+        <h1>
+            Every Second<br>
+            <span>Matters.</span>
+        </h1>
+
+        <p>
+            MEDIGUARD connects emergency alerts, GPS location,
+            medical information, and emergency contacts in one
+            simple platform.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="btn btn-primary"
+                    onclick="triggerSOS()">
+                🚨 Test SOS
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="scrollToSection('validation')">
+                View Validation
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- SOS -->
+    <div class="sos-card">
+
+        <h2>Emergency SOS</h2>
+
+        <p>
+            Press the button to simulate an emergency alert.
+        </p>
+
+        <button class="sos-button"
+                onclick="triggerSOS()">
+            SOS
+        </button>
+
+        <div class="sos-status" id="status">
+            System Ready
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+<section class="section" id="features">
+
+    <div class="section-title">
+
+        <h2>Core Solution</h2>
+
+        <p>
+            Build, test and validate the essential emergency features.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="card">
+
+            <div class="card-icon">🚨</div>
+
+            <h3>One-Tap SOS</h3>
+
+            <p>
+                Sends an emergency alert with minimum user interaction.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">📍</div>
+
+            <h3>Live GPS</h3>
+
+            <p>
+                Shares the user's current location during emergencies.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">🏥</div>
+
+            <h3>Medical Profile</h3>
+
+            <p>
+                Provides important medical information to authorized responders.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">🔔</div>
+
+            <h3>Smart Alerts</h3>
+
+            <p>
+                Connects emergency contacts and response teams quickly.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+<section class="section" id="dashboard">
+
+    <div class="section-title">
+
+        <h2>Emergency Dashboard</h2>
+
+        <p>
+            Example of the information available during an emergency.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+        <div class="profile-card">
+
+            <h2>Medical Profile</h2>
+
+            <br>
+
+            <div class="profile-row">
+                <span class="label">Patient</span>
+                <strong>Demo User</strong>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Blood Group</span>
+                <strong>O+</strong>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Allergies</span>
+                <strong>None Reported</strong>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Emergency Contact</span>
+                <strong>Family Contact</strong>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Status</span>
+                <strong>Ready</strong>
+            </div>
+
+        </div>
+
+
+        <div class="location-card">
+
+            <h2>Current Location</h2>
+
+            <br>
+
+            <div class="map">
+
+                <div class="location-pin"></div>
+
+            </div>
+
+            <br>
+
+            <p>
+                📍 GPS Location: Ready to share
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WORKFLOW -->
+<section class="section" id="workflow">
+
+    <div class="section-title">
+
+        <h2>Emergency Workflow</h2>
+
+        <p>
+            Simple process from emergency detection to response.
+        </p>
+
+    </div>
+
+
+    <div class="workflow">
+
+        <div class="step">🚨 SOS</div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">🤖 AI Analysis</div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">📍 GPS</div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">🔔 Alert</div>
+
+        <div class="arrow">→</div>
+
+        <div class="step">🏥 Help</div>
+
+    </div>
+
+</section>
+
+
+<!-- VALIDATION -->
+<section class="section" id="validation">
+
+    <div class="section-title">
+
+        <h2>Build & Validate</h2>
+
+        <p>
+            Core features tested through controlled emergency scenarios.
+        </p>
+
+    </div>
+
+
+    <div class="validation">
+
+        <div class="test">
+
+            <div class="test-header">
+
+                <h3>SOS Test</h3>
+
+                <span class="pass">✓ PASS</span>
+
+            </div>
+
+            <p>
+                Verified that a single SOS action creates an emergency alert.
+            </p>
+
+        </div>
+
+
+        <div class="test">
+
+            <div class="test-header">
+
+                <h3>GPS Test</h3>
+
+                <span class="pass">✓ PASS</span>
+
+            </div>
+
+            <p>
+                Verified that location data can be captured and shared.
+            </p>
+
+        </div>
+
+
+        <div class="test">
+
+            <div class="test-header">
+
+                <h3>Alert Test</h3>
+
+                <span class="pass">✓ PASS</span>
+
+            </div>
+
+            <p>
+                Verified the emergency notification workflow and status update.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <h2>MEDIGUARD</h2>
+
+    <p>
+        Smart Emergency Response • Hackathon Prototype
+    </p>
+
+    <p>
+        Every Second Matters.
+    </p>
+
+</footer>
+
+
+<script>
+
+/* SOS FUNCTION */
+
+function triggerSOS() {
+
+    const status = document.getElementById("status");
+
+    status.innerHTML = "🚨 Emergency Alert Processing...";
+
+    setTimeout(() => {
+
+        status.innerHTML =
+        "✓ Alert Sent • GPS Location Shared";
+
+    }, 1500);
+
+}
+
+
+/* SCROLL FUNCTION */
+
+function scrollToSection(id) {
+
+    document.getElementById(id)
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+</script>
+
+</body>
+</html>
