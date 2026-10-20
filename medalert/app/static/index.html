@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8fc">
+  <meta name="description" content="MedAlert emergency contact and alert dashboard prototype">
+  <title>MedAlert — Emergency Response</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="/"><span class="brand-mark">✚</span><span>Med<span class="brand-blue">Alert</span><small>EMERGENCY RESPONSE</small></span></a>
+    <div class="side-label">WORKSPACE</div>
+    <button class="nav-item active" data-view="overview"><span>▦</span> Overview</button>
+    <button class="nav-item" data-view="contacts"><span>♡</span> Emergency contacts</button>
+    <button class="nav-item" data-view="history"><span>◷</span> Alert history</button>
+    <div class="sidebar-bottom">
+      <div class="help-card"><span class="help-icon">✚</span><b>Need urgent help?</b><p>This demo does not dispatch an ambulance.</p><a href="tel:112">Call 112 <span>↗</span></a></div>
+      <div class="user-mini"><div class="avatar" id="avatar">M</div><div class="user-mini-text"><b id="side-name">Guest</b><small id="side-email">Not signed in</small></div><button id="logout-btn" class="icon-btn" title="Sign out" hidden>↪</button></div>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div class="eyebrow">PERSONAL SAFETY CENTER</div><h1 id="page-title">Overview</h1></div><div class="top-actions"><span class="secure-pill"><span class="green-dot"></span> Secure session</span><div class="date-label" id="today-label"></div></div></header>
+    <div id="auth-panel" class="auth-layout">
+      <section class="auth-intro"><div class="eyebrow light">YOUR SAFETY, CONNECTED</div><h2>Help can be<br><span>one tap away.</span></h2><p>Keep trusted people close. Save emergency contacts, share your location, and create an alert when you need assistance.</p><div class="trust-points"><span>✓ Private account</span><span>✓ Location only when requested</span><span>✓ Your contacts, your choice</span></div></section>
+      <section class="auth-card"><div class="auth-tabs"><button class="auth-tab selected" data-auth="login">Sign in</button><button class="auth-tab" data-auth="register">Create account</button></div>
+        <form id="auth-form"><div id="name-wrap" class="field" hidden><label for="full-name">Full name</label><input id="full-name" autocomplete="name" maxlength="100" placeholder="Your name"></div>
+          <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+          <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="10" required placeholder="At least 10 characters"></div>
+          <p class="form-hint" id="password-hint" hidden>Use at least 10 characters. Never reuse a password from another site.</p>
+          <button class="primary-btn full" id="auth-submit" type="submit">Sign in securely <span>→</span></button><p class="form-message" id="auth-message" role="status"></p>
+          <p class="legal-note">Prototype account data is stored by the app. Use a trusted device and sign out when finished.</p>
+        </form>
+      </section>
+    </div>
+    <div id="app-content" hidden>
+      <section class="emergency-banner"><div class="banner-symbol">!</div><div class="banner-copy"><b>Real emergency?</b><p>This prototype records alerts only. It does not text contacts or dispatch an ambulance.</p></div><a href="tel:112" class="call-btn">Call 112 <span>↗</span></a></section>
+      <section class="stats-grid">
+        <article class="stat-card"><div class="stat-top"><span>Saved contacts</span><span class="stat-icon blue">♡</span></div><strong id="stat-contacts">0</strong><small>Trusted people</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Alerts created</span><span class="stat-icon red">♧</span></div><strong id="stat-alerts">0</strong><small>In your history</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Location access</span><span class="stat-icon green">⌖</span></div><strong class="status-word" id="stat-location">Not shared</strong><small>Requested only for SOS</small></article>
+      </section>
+      <div class="dashboard-grid">
+        <section class="panel sos-panel"><div class="panel-heading"><div><div class="eyebrow">EMERGENCY ACTION</div><h2>Request assistance</h2></div><span class="live-chip"><span class="red-dot"></span> SOS</span></div>
+          <div class="sos-center"><button class="sos-button" id="sos-button" aria-label="Create emergency alert"><span class="sos-cross">✚</span><b>SOS</b><small>PRESS FOR HELP</small></button><p id="sos-caption">Tap SOS to create an alert and optionally attach your location.</p></div>
+          <div class="sos-foot"><span class="tiny-shield">✓</span><span>Browser location permission is optional.</span></div><p class="form-message" id="sos-message" role="status"></p>
+        </section>
+        <section class="panel contacts-panel"><div class="panel-heading"><div><div class="eyebrow">YOUR SUPPORT NETWORK</div><h2>Emergency contacts</h2></div><button class="text-btn" data-view="contacts">Manage →</button></div><div id="contact-preview" class="contact-list"><div class="empty-state">Sign in to manage trusted contacts.</div></div><button class="outline-btn" data-view="contacts">＋ Add a contact</button></section>
+      </div>
+      <section class="panel fall-panel">
+        <div class="panel-heading"><div><div class="eyebrow">OPTIONAL DEVICE SENSOR</div><h2>Fall detection beta</h2></div><span class="beta-chip">EXPERIMENTAL</span></div>
+        <div class="fall-row"><div class="fall-icon">⌁</div><div class="fall-copy"><b>Motion-based fall warning</b><p>On compatible phones, motion data may flag a sudden movement. It is not medically validated and can miss falls or trigger false alarms.</p></div><button class="outline-btn fall-toggle" id="fall-toggle" type="button">Enable sensor</button></div>
+        <p class="form-message" id="fall-message" role="status">Off by default. Only operates while this page is open.</p>
+      </section>
+      <section class="panel history-panel"><div class="panel-heading"><div><div class="eyebrow">RECENT ACTIVITY</div><h2>Recent alerts</h2></div><button class="text-btn" data-view="history">View history →</button></div><div id="recent-alerts" class="table-wrap"><div class="empty-state">No alerts created yet.</div></div></section>
+      <section id="contacts-view" class="panel inner-view" hidden><div class="panel-heading"><div><div class="eyebrow">YOUR SUPPORT NETWORK</div><h2>Manage emergency contacts</h2><p class="muted">Save up to 10 people you trust. Ask permission before saving their details.</p></div></div>
+        <form id="contact-form" class="contact-form"><div class="field"><label for="contact-name">Full name</label><input id="contact-name" required minlength="2" maxlength="100" placeholder="Contact name"></div><div class="field"><label for="contact-phone">Phone number</label><input id="contact-phone" required pattern="[+()0-9 .-]{7,30}" maxlength="30" placeholder="+91 98765 43210"></div><div class="field"><label for="contact-relationship">Relationship</label><input id="contact-relationship" required minlength="2" maxlength="50" value="Family"></div><button class="primary-btn" type="submit">Save contact <span>＋</span></button></form>
+        <div id="all-contacts" class="contact-list full-list"></div><p id="contacts-message" class="form-message" role="status"></p>
+      </section>
+      <section id="history-view" class="panel inner-view" hidden><div class="panel-heading"><div><div class="eyebrow">ACTIVITY LOG</div><h2>Alert history</h2><p class="muted">Alerts created by your account; not a verified dispatch log.</p></div></div><div id="all-alerts" class="table-wrap"></div></section>
+    </div>
+    <footer><span>MedAlert <span class="footer-dot">•</span> Personal emergency support</span><span>Prototype · Not a replacement for emergency services</span></footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="/static/app.js" defer></script>
+</body></html>
